@@ -1,0 +1,9 @@
+/* RTL-specific overrides */
+[dir="rtl"] .recharts-wrapper {
+  direction: ltr;
+}
+
+[dir="rtl"] .recharts-legend-item-text {
+  margin-right: 4px;
+  margin-left: 0;
+}
