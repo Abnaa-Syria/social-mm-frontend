@@ -1,11 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { LayoutGrid, Megaphone, ClipboardList, Clock, CheckCircle, Plus, Link2, UserCheck } from 'lucide-react';
+import { LayoutGrid, Megaphone, ClipboardList, Clock, CheckCircle, Plus, Link2, UserCheck, Zap } from 'lucide-react';
 import { workspaceService } from '../../services';
 import useAuthStore from '../../store/authStore';
 import usePermissions from '../../hooks/usePermissions';
 import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
+import PageHelp from '../../components/common/PageHelp';
 import Button from '../../components/common/Button';
 import WorkspaceStatsCard from '../../components/workspace/WorkspaceStatsCard';
 import BoardCard from '../../components/workspace/BoardCard';
@@ -31,6 +32,8 @@ export default function WorkspaceHomePage() {
 
   return (
     <div className="space-y-8">
+      <PageHelp pageKey="workspace" />
+
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-l from-[#0F172A] via-[#1E3A8A] to-[#7C3AED] text-white p-8 shadow-xl">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utb3BhY2l0eT0iLjA1Ii8+PC9nPjwvc3ZnPg==')] opacity-50" />
         <div className="relative">
@@ -38,6 +41,11 @@ export default function WorkspaceHomePage() {
           <h1 className="text-3xl font-extrabold mt-1">مرحباً، {user?.name}</h1>
           <p className="text-blue-100 mt-2 max-w-xl">نظرة سريعة على عمليات السوشيال ميديا اليوم — البوردات، المهام، والمراجعات.</p>
           <div className="flex flex-wrap gap-3 mt-6">
+            {(can('post_links.create') && can('tasks.create')) && (
+              <Link to={ROUTES.QUICK_START}>
+                <Button className="!bg-amber-400 !text-[#0F172A] hover:!bg-amber-300 font-extrabold"><Zap size={16} /> إنشاء سريع</Button>
+              </Link>
+            )}
             {can('boards.create') && (
               <Link to={ROUTES.BOARD_CREATE}>
                 <Button className="!bg-white !text-[#1E3A8A] hover:!bg-blue-50"><Plus size={16} /> إنشاء بورد جديد</Button>

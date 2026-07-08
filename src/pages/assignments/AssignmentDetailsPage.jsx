@@ -5,9 +5,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
-import { CheckCircle, XCircle, Ban, Send, Play } from 'lucide-react';
+import { CheckCircle, XCircle, Ban, Send, Play, Zap } from 'lucide-react';
 import { assignmentsService } from '../../services';
 import PageHeader from '../../components/common/PageHeader';
+import PageHelp from '../../components/common/PageHelp';
+import QuickCompleteModal from '../../components/common/QuickCompleteModal';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
@@ -39,6 +41,7 @@ export default function AssignmentDetailsPage() {
   const [submitModal, setSubmitModal] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
   const [approveModal, setApproveModal] = useState(false);
+  const [quickCompleteOpen, setQuickCompleteOpen] = useState(false);
 
   const { data: assignment, isLoading, error, refetch } = useQuery({
     queryKey: ['assignment', id],
@@ -122,13 +125,22 @@ export default function AssignmentDetailsPage() {
     },
   ];
 
+  const canQuickComplete = (canStart || canSubmit);
+
   return (
     <div className="space-y-6">
+      <PageHelp pageKey="assignments" />
+
       <PageHeader
         title={`تعيين: ${assignment.task?.title || ''}`}
         subtitle={assignment.user?.name}
         action={
           <div className="flex gap-2 flex-wrap">
+            {canQuickComplete && (
+              <Button variant="accent" onClick={() => setQuickCompleteOpen(true)}>
+                <Zap size={18} /> تنفيذ سريع
+              </Button>
+            )}
             {canStart && (
               <Button variant="accent" loading={startMutation.isPending} onClick={() => startMutation.mutate()}>
                 <Play size={18} /> بدء التنفيذ
@@ -251,6 +263,12 @@ export default function AssignmentDetailsPage() {
           <Button variant="danger" loading={cancelMutation.isPending} onClick={() => cancelMutation.mutate()}>إلغاء</Button>
         </div>
       </Modal>
+
+      <QuickCompleteModal
+        assignment={assignment}
+        open={quickCompleteOpen}
+        onClose={() => setQuickCompleteOpen(false)}
+      />
     </div>
   );
 }

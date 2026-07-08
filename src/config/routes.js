@@ -55,5 +55,7 @@ export const ROUTES = {
   REPORTS_TASKS: '/reports/tasks',
   REPORTS_ACTIVITY: '/reports/activity',
   NOTIFICATIONS: '/notifications',
+  QUICK_START: '/quick-start',
+  USAGE_GUIDE: '/guide',
   FORBIDDEN: '/403',
 };

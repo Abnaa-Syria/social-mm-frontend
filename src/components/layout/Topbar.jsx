@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Search, Menu, LogOut, ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Search, Menu, LogOut, ChevronDown, BookOpen } from 'lucide-react';
 import NotificationDropdown from './NotificationDropdown';
 import useAuth from '../../hooks/useAuth';
 import { getInitials } from '../../lib/formatters';
 import { APP_NAME } from '../../config/constants';
+import { ROUTES } from '../../config/routes';
 
 export default function Topbar({ onMenuClick }) {
   const { user, logout } = useAuth();
@@ -26,6 +28,14 @@ export default function Topbar({ onMenuClick }) {
         </div>
       </div>
       <div className="flex items-center gap-3">
+        <Link
+          to={ROUTES.USAGE_GUIDE}
+          className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold text-[#2563EB] bg-blue-50 hover:bg-blue-100 transition"
+          title="دليل الاستخدام"
+        >
+          <BookOpen size={16} />
+          <span>دليل الاستخدام</span>
+        </Link>
         <span className="hidden sm:inline text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">AR</span>
         <NotificationDropdown />
         <div className="relative">
@@ -44,6 +54,13 @@ export default function Topbar({ onMenuClick }) {
               <div className="px-4 py-2 border-b border-gray-50">
                 <p className="text-xs text-gray-500">{APP_NAME}</p>
               </div>
+              <Link
+                to={ROUTES.USAGE_GUIDE}
+                onClick={() => setOpen(false)}
+                className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
+              >
+                <BookOpen size={16} /> دليل الاستخدام
+              </Link>
               <button onClick={logout} className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50">
                 <LogOut size={16} /> تسجيل الخروج
               </button>

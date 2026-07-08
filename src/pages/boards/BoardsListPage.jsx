@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { Plus, Eye, Pencil, Trash2, LayoutGrid, Table2 } from 'lucide-react';
 import { boardsService } from '../../services/index.js';
 import PageHeader from '../../components/common/PageHeader';
+import PageHelp from '../../components/common/PageHelp';
 import Table from '../../components/common/Table';
 import Pagination from '../../components/common/Pagination';
 import SearchInput from '../../components/common/SearchInput';
@@ -90,6 +91,8 @@ export default function BoardsListPage() {
           </Link>
         }
       />
+
+      <PageHelp pageKey="boards" />
 
       <FilterBar>
         <div className="flex-1 min-w-[200px]">

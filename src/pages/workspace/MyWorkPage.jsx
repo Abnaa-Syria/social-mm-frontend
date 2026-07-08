@@ -4,16 +4,19 @@ import { useQuery } from '@tanstack/react-query';
 import { workspaceService } from '../../services';
 import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
+import PageHelp from '../../components/common/PageHelp';
+import QuickCompleteModal from '../../components/common/QuickCompleteModal';
 import WorkspaceStatsCard from '../../components/workspace/WorkspaceStatsCard';
 import KanbanBoard from '../../components/workspace/KanbanBoard';
 import AssignmentKanbanCard from '../../components/workspace/AssignmentKanbanCard';
 import DetailsDrawer from '../../components/workspace/DetailsDrawer';
-import { ClipboardList, CheckCircle, Clock, XCircle, Send } from 'lucide-react';
+import { ClipboardList, CheckCircle, Clock, XCircle, Send, Zap } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
 import Button from '../../components/common/Button';
 
 export default function MyWorkPage() {
   const [selected, setSelected] = useState(null);
+  const [quickComplete, setQuickComplete] = useState(null);
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['my-work'],
@@ -24,9 +27,12 @@ export default function MyWorkPage() {
   if (error) return <ErrorState message="فشل تحميل مهامك" onRetry={refetch} />;
 
   const stats = data?.stats || {};
+  const canQuickComplete = (status) => ['ASSIGNED', 'IN_PROGRESS', 'REJECTED'].includes(status);
 
   return (
     <div className="space-y-6">
+      <PageHelp pageKey="myWork" />
+
       <div className="bg-gradient-to-l from-[#14B8A6] to-[#2563EB] rounded-3xl p-8 text-white shadow-lg">
         <p className="text-teal-100 text-sm">مساحة عملي</p>
         <h1 className="text-3xl font-extrabold mt-1">مهامي وتعييناتي</h1>
@@ -53,9 +59,14 @@ export default function MyWorkPage() {
         {selected && (
           <div className="space-y-4">
             <AssignmentKanbanCard card={selected} />
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2">
+              {canQuickComplete(selected.status) && (
+                <Button onClick={() => { setQuickComplete(selected); setSelected(null); }}>
+                  <Zap size={16} /> تنفيذ سريع — أنجز وأرسل
+                </Button>
+              )}
               <Link to={ROUTES.ASSIGNMENT_DETAILS(selected.id)} className="flex-1">
-                <Button className="w-full">فتح صفحة التنفيذ</Button>
+                <Button variant="secondary" className="w-full">فتح صفحة التفاصيل</Button>
               </Link>
               {selected.task?.postLink?.url && (
                 <a href={selected.task.postLink.url} target="_blank" rel="noreferrer" className="flex-1">
@@ -66,6 +77,12 @@ export default function MyWorkPage() {
           </div>
         )}
       </DetailsDrawer>
+
+      <QuickCompleteModal
+        assignment={quickComplete}
+        open={!!quickComplete}
+        onClose={() => setQuickComplete(null)}
+      />
     </div>
   );
 }

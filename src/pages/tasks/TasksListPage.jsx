@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Plus, Eye, Pencil } from 'lucide-react';
 import { tasksService, boardsService, campaignsService, postLinksService, taskTypesService, teamsService } from '../../services';
 import PageHeader from '../../components/common/PageHeader';
+import PageHelp from '../../components/common/PageHelp';
 import FilterBar from '../../components/common/FilterBar';
 import SearchInput from '../../components/common/SearchInput';
 import Select from '../../components/common/Select';
@@ -113,6 +114,8 @@ export default function TasksListPage() {
           )
         }
       />
+
+      <PageHelp pageKey="tasks" />
 
       <FilterBar>
         <div className="flex-1 min-w-[200px]">

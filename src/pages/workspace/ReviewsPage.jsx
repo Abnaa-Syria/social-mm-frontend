@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { workspaceService, assignmentsService } from '../../services';
 import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
+import PageHelp from '../../components/common/PageHelp';
 import ReviewCard from '../../components/workspace/ReviewCard';
 import Modal from '../../components/common/Modal';
 import Textarea from '../../components/common/Textarea';
@@ -71,6 +72,8 @@ export default function ReviewsPage() {
 
   return (
     <div className="space-y-6">
+      <PageHelp pageKey="reviews" />
+
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
         <h1 className="text-2xl font-extrabold text-gray-900">قيد المراجعة</h1>
         <p className="text-gray-500 mt-1">راجع التنفيذ، اعتمد أو ارفض التعيينات والإثباتات.</p>

@@ -2,9 +2,15 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, LayoutGrid, Megaphone, ClipboardList, UserCheck, UsersRound,
   Users, Shield, Globe, ListChecks, BarChart3, ScrollText, Settings, KeyRound, Bell, Briefcase,
+  Zap, BookOpen,
 } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
 import usePermissions from '../../hooks/usePermissions';
+
+/** عناصر تظهر لكل المستخدمين المسجّلين بدون صلاحية */
+const alwaysVisibleItems = [
+  { label: 'دليل الاستخدام', icon: BookOpen, path: ROUTES.USAGE_GUIDE },
+];
 
 const sections = [
   {
@@ -12,6 +18,7 @@ const sections = [
     items: [
       { label: 'الرئيسية', icon: LayoutDashboard, path: ROUTES.WORKSPACE, permission: ['dashboard.view', 'dashboard_stats.view', 'boards.view'] },
       { label: 'مساحة عملي', icon: Briefcase, path: ROUTES.MY_WORK, permission: 'task_assignments.view' },
+      { label: 'إنشاء سريع', icon: Zap, path: ROUTES.QUICK_START, permission: ['post_links.create', 'tasks.create'] },
       { label: 'البوردات', icon: LayoutGrid, path: ROUTES.BOARDS, permission: 'boards.view' },
       { label: 'حملاتي', icon: Megaphone, path: ROUTES.CAMPAIGNS, permission: 'campaigns.view' },
       { label: 'المهام', icon: ClipboardList, path: ROUTES.TASKS, permission: 'tasks.view' },
@@ -70,6 +77,27 @@ export default function Sidebar({ onNavigate }) {
         </div>
       </div>
       <nav className="flex-1 overflow-y-auto p-3 space-y-5">
+        <div>
+          <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">المساعدة</p>
+          <div className="space-y-0.5">
+            {alwaysVisibleItems.map((item) => {
+              const active = isActive(item.path, location);
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={onNavigate}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all ${active ? 'bg-white/10 text-white shadow-inner' : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'}`}
+                >
+                  <Icon size={17} className={active ? 'text-[#60A5FA]' : ''} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
         {sections.map((section) => {
           const visibleItems = section.items.filter((item) => {
             const perms = Array.isArray(item.permission) ? item.permission : [item.permission];

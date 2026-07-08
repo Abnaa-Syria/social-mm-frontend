@@ -55,6 +55,8 @@ import TasksReportPage from './pages/reports/TasksReportPage';
 import ActivityReportPage from './pages/reports/ActivityReportPage';
 import NotificationsPage from './pages/notifications/NotificationsPage';
 import ForbiddenPage from './pages/errors/ForbiddenPage';
+import QuickStartPage from './pages/quickStart/QuickStartPage';
+import UsageGuidePage from './pages/guide/UsageGuidePage';
 
 function AuthInit({ children }) {
   const { isAuthenticated, fetchMe } = useAuthStore();
@@ -127,6 +129,8 @@ function AppRoutes() {
         <Route path={ROUTES.REPORTS_TASKS} element={<ProtectedRoute permission="reports.view"><TasksReportPage /></ProtectedRoute>} />
         <Route path={ROUTES.REPORTS_ACTIVITY} element={<ProtectedRoute permission="reports.view"><ActivityReportPage /></ProtectedRoute>} />
         <Route path={ROUTES.NOTIFICATIONS} element={<ProtectedRoute permission="notifications.view"><NotificationsPage /></ProtectedRoute>} />
+        <Route path={ROUTES.QUICK_START} element={<ProtectedRoute permission={['post_links.create', 'tasks.create']}><QuickStartPage /></ProtectedRoute>} />
+        <Route path={ROUTES.USAGE_GUIDE} element={<UsageGuidePage />} />
         <Route path={ROUTES.FORBIDDEN} element={<ForbiddenPage />} />
       </Route>
       <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
